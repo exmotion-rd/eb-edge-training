@@ -63,7 +63,6 @@ RUN tar xfvz protobuf-cpp-${PROTOBUF_VERSION}.tar.gz && \
     cd protobuf-${PROTOBUF_VERSION} && \
     ./configure && \
     make -j$(nproc) && \
-    make check && \
     make install && \
     ldconfig
 
@@ -101,8 +100,8 @@ RUN apt-get update && \
 # 注意: CUDAなどを利用するために、docker build を nvidiaランタイムで行う必要がある
 ARG ONNX_RUNTIME_VERSION=1.9.1
 WORKDIR /usr/src
-RUN git clone --recursive https://github.com/microsoft/onnxruntime.git -b v${ONNX_RUNTIME_VERSION} && \
-    export MAKEFLAGS=-j$(nproc) && \
+RUN git clone --recursive https://github.com/microsoft/onnxruntime.git -b v${ONNX_RUNTIME_VERSION}
+RUN export MAKEFLAGS=-j$(nproc) && \
     export CUDACXX="/usr/local/cuda/bin/nvcc" && \
     cd onnxruntime && \
     ./build.sh --update --config Release --build --build_wheel \
