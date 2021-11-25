@@ -58,27 +58,22 @@ RUN apt-get update && \
         unzip \
         python3.6-dev
 
-ADD https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-cpp-${PROTOBUF_VERSION}.tar.gz .
-RUN tar xfvz protobuf-cpp-${PROTOBUF_VERSION}.tar.gz && \
-    cd protobuf-${PROTOBUF_VERSION} && \
-    ./configure && \
+ADD https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-python-${PROTOBUF_VERSION}.tar.gz .
+RUN tar xfvz protobuf-python-${PROTOBUF_VERSION}.tar.gz
+RUN pip3 install --no-cache-dir Cython setuptools wheel
+
+RUN cd protobuf-${PROTOBUF_VERSION} && \
+    ./configure --disable-shared && \
+    sed -i 's/^\(C.*FLAGS\) = \(.*\)$/\1 = \2 -fPIC/' Makefile &&\
+    sed -i 's/^\(C.*FLAGS\) = \(.*\)$/\1 = \2 -fPIC/' src/Makefile &&\
     make -j$(nproc) && \
     make install && \
     ldconfig
 
-WORKDIR /usr/src/protoc
-ADD https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protoc-${PROTOBUF_VERSION}-linux-aarch_64.zip .
-RUN unzip protoc-${PROTOBUF_VERSION}-linux-aarch_64.zip && \
-    cp -p bin/protoc /usr/local/bin
-
 WORKDIR /usr/src/protobuf
-ADD https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-python-${PROTOBUF_VERSION}.tar.gz .
-RUN tar xfvz protobuf-python-${PROTOBUF_VERSION}.tar.gz && \
-    cd protobuf-${PROTOBUF_VERSION}/python && \
-    pip3 install --no-cache-dir Cython setuptools wheel && \
+RUN cd protobuf-${PROTOBUF_VERSION}/python && \
     python3 setup.py bdist_wheel --cpp_implementation && \
     pip3 install dist/protobuf-3.19.1-cp36-cp36m-linux_aarch64.whl
-
 
 ###########################################################################################
 ### ONNX
@@ -90,18 +85,15 @@ RUN apt-get update && \
         build-essential \
         software-properties-common \
         libopenblas-dev \
-        libpython3.6-dev \
-        python3-dev \
-        python3-setuptools \
-        python3-wheel
+        libpython3.6-dev
 
 # ONNX Runtime (with --use_cuda, --use_tensorrt)
 # 参考サイト: https://onnxruntime.ai/docs/build/eps.html#tensorrt
 # 注意: CUDAなどを利用するために、docker build を nvidiaランタイムで行う必要がある
 ARG ONNX_RUNTIME_VERSION=1.9.1
 WORKDIR /usr/src
-RUN git clone --recursive https://github.com/microsoft/onnxruntime.git -b v${ONNX_RUNTIME_VERSION}
-RUN export MAKEFLAGS=-j$(nproc) && \
+RUN git clone --recursive https://github.com/microsoft/onnxruntime.git -b v${ONNX_RUNTIME_VERSION} && \
+    export MAKEFLAGS=-j$(nproc) && \
     export CUDACXX="/usr/local/cuda/bin/nvcc" && \
     cd onnxruntime && \
     ./build.sh --update --config Release --build --build_wheel \
@@ -127,6 +119,8 @@ RUN git clone --recursive https://github.com/onnx/optimizer onnxoptimizer && \
     pip3 install dist/*.whl
 RUN pip3 install --no-cache-dir --no-deps onnx-simplifier
 
+# Rmove setup tools
+RUN pip3 uninstall -y Cython setuptools wheel
 
 ###########################################################################################
 ### JupyterLab
