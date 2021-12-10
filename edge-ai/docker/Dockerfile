@@ -152,25 +152,27 @@ COPY --from=base_libs /usr/lib /usr/lib
 # copy: protobuf, onnx
 COPY --from=onnx_builder /usr/local/bin /usr/local/bin/
 COPY --from=onnx_builder /usr/local/lib/ /usr/local/lib/
+COPY --from=onnx_builder /usr/local/include/ /usr/local/include/
+COPY --from=onnx_builder /usr/local/share /usr/local/share
 
 # copy: jupyterlab
 COPY --from=jupyter_builder /usr/local/bin /usr/local/bin/
 COPY --from=jupyter_builder /usr/local/lib/ /usr/local/lib/
 COPY --from=jupyter_builder /usr/local/share/jupyter /usr/local/share/jupyter
 
-# TensorFlow2 Object Detection Models to ONNX, TensorRT
-WORKDIR /usr/src
-RUN git clone https://github.com/pskiran1/TensorRT-support-for-Tensorflow-2-Object-Detection-Models.git
-ENV TF2ODM_TOOL=/usr/src/TensorRT-support-for-Tensorflow-2-Object-Detection-Models
-
 # additonal packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        sudo \
         less \
-        vim  && \
+        python3-tk \
+        sudo \
+        vim  \
+        zlib1g-dev && \
     apt-get clean && \
     rm -r /var/lib/apt/lists/*
+
+# update pip
+RUN python3 -m pip install --upgrade pip
 
 # additional python packages
 RUN pip3 install --no-cache-dir pillow
