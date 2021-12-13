@@ -145,10 +145,6 @@ RUN pip3 install --no-cache-dir \
 ###########################################################################################
 FROM base_libs AS build
 
-# copy: bin, lib
-COPY --from=base_libs /usr/bin /usr/bin
-COPY --from=base_libs /usr/lib /usr/lib
-
 # copy: protobuf, onnx
 COPY --from=onnx_builder /usr/local/bin /usr/local/bin/
 COPY --from=onnx_builder /usr/local/lib/ /usr/local/lib/
@@ -175,10 +171,10 @@ RUN apt-get update && \
 RUN python3 -m pip install --upgrade pip
 
 # additional python packages
-RUN pip3 install --no-cache-dir pillow
-RUN pip3 install --no-cache-dir tensorflow_datasets 
 RUN pip3 install --no-cache-dir colored
+RUN pip3 install --no-cache-dir pillow
 RUN pip3 install --no-cache-dir psutil
+RUN pip3 install --no-cache-dir tensorflow_datasets 
 RUN pip3 install --no-cache-dir tqdm
 
 # ユーザーの追加
