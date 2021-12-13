@@ -1,0 +1,22 @@
+###########################################################################################
+# Dockerfile for Jetson Nano with sshd for remote development
+FROM ghcr.io/exmotion-rd/edge-ai-dev:latest
+
+USER root
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends openssh-server && \
+    apt-get clean
+
+RUN mkdir /var/run/sshd
+
+ARG sshd_port=50022
+RUN sed -i "s/#Port 22/Port ${sshd_port}/" /etc/ssh/sshd_config
+RUN sed -i "s/#PubkeyAuthentication yes/PubkeyAuthentication yes/" /etc/ssh/sshd_config
+
+COPY ./config/id_ed25519.pub /home/${user}/.ssh/authorized_keys
+RUN chown -R ${user} /home/${user}/.ssh && \
+    chmod 700 /home/${user}/.ssh && \
+    chmod 600 /home/${user}/.ssh/authorized_keys
+
+EXPOSE ${sshd_port}
+CMD ["/usr/sbin/sshd", "-D"]
