@@ -1,0 +1,45 @@
+###########################################################################################
+# Dockerfile for Jetson Nano with sshd for remote development
+FROM nvcr.io/nvidia/l4t-base:r32.6.1 as base
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        autoconf \
+        build-essential \
+        ca-certificates \
+        git \
+        libtool \
+        unzip \
+        python3.6-dev \
+        zlib1g \
+        zlib1g-dev \
+        pkg-config && \
+    apt-get clean
+
+# CMake
+WORKDIR /usr/src/cmake
+ADD https://github.com/Kitware/CMake/releases/download/v3.21.4/cmake-3.21.4-linux-aarch64.tar.gz .
+RUN tar xfvz cmake-3.21.4-linux-aarch64.tar.gz && \
+    cd cmake-3.21.4-linux-aarch64 && \
+    cp -R bin/* /usr/local/bin && \
+    cp -R share/* /usr/local/share && \
+    cd .. && rm -rf cmake-3.21.4-linux-aarch64
+
+# TensorRT OSS
+WORKDIR /usr/src
+ARG trt_ver=8.0
+ARG trt_install_prefix=/usr/local/tensorrt
+RUN git clone https://github.com/NVIDIA/TensorRT.git --recursive -b release/${trt_ver}
+RUN cd TensorRT && \
+    mkdir -p build && cd build && \
+    cmake .. \
+        -DTRT_LIB_DIRS=/usr/src/tensorrt \
+        -DTRT_OUT_DIR=$(pwd)/out \
+        -DTRT_PLATFORM_ID=aarch64 \
+        -DCUDA_VERSION=10.2 \
+        -DCMAKE_INSTALL_PREFIX=${trt_install_prefix} && \
+    CC=/usr/bin/gcc make -j$(nproc) && \
+    make install
+
+ENV LD_LIBRARY_PATH=${trt_install_prefix}
+CMD /bin/bash
