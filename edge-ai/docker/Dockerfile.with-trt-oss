@@ -1,5 +1,5 @@
 ###########################################################################################
-# Dockerfile for Jetson Nano with sshd for remote development
+# Dockerfile for Jetson Nano with TensorRT-OSS
 FROM nvcr.io/nvidia/l4t-base:r32.6.1 as trt_builder
 
 RUN apt-get update && \
