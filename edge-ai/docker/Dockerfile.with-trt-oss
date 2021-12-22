@@ -18,7 +18,7 @@ RUN apt-get update && \
 
 # CMake
 WORKDIR /usr/src/cmake
-ADD https://github.com/Kitware/CMake/releases/download/v3.21.4/cmake-3.21.4-linux-aarch64.tar.gz .
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.4/cmake-3.21.4-linux-aarch64.tar.gz
 RUN tar xfvz cmake-3.21.4-linux-aarch64.tar.gz && \
     cd cmake-3.21.4-linux-aarch64 && \
     cp -R bin/* /usr/local/bin && \
@@ -42,9 +42,11 @@ RUN cd TensorRT && \
     make install
 
 # copy binaries
-FROM ghcr.io/exmotion-rd/edge-ai-dev:latest
+FROM ghcr.io/exmotion-rd/edge-ai-dev:latest as base
 
-COPY --from=trt_bulder ${trt_install_prefix} ${trt_install_prefix}
+USER root
+COPY --from=trt_builder /usr/local/tensorrt /usr/local/tensorrt
 
-ENV LD_LIBRARY_PATH=${trt_install_prefix}/lib
+USER ${user}
+ENV LD_LIBRARY_PATH=/usr/local/tensorrt/lib
 CMD /bin/bash
