@@ -1,6 +1,4 @@
 #!/bin/bash
-#export DOCKER_BUILDKIT=0
-#docker build --no-cache --network host -t ros2-foxy-env .
 ROS_DISTRO=foxy
 if [ $# -eq 1 ]; then
     ROS_DISTRO=$1

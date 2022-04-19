@@ -38,11 +38,9 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
 WORKDIR ${ROS_WS}
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
  && colcon build --event-handlers desktop_notification- status- --cmake-args -DCMAKE_BUILD_TYPE=Release \
- && sed --in-place --expression \
-    '$isource "/root/ros2_ws/install/local_setup.bash"' \
-    /ros_entrypoint.sh \
- && sed '$d' /ros_entrypoint.sh > /root/.bash_profile \
  && rm -rf /var/lib/apt/lists/*
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc \
+ && echo "source ${ROS_WS}/install/local_setup.bash" >> /root/.bashrc
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
