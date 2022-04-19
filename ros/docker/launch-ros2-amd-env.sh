@@ -5,7 +5,10 @@ if [ $# -eq 1 ]; then
 fi
 
 # DockerコンテナからのX11のアクセスを許可
-xhost + local:docker
+UNAME_R=$(uname -r)
+if [[ ! "$UNAME_R" =~ WSL2 ]]; then
+    xhost + local:docker
+fi
 
 # コンテナの起動
 docker run  --rm --network host \
@@ -20,4 +23,6 @@ docker run  --rm --network host \
  ros2-${ROS_DISTRO}-env 
 
 # DockerコンテナからのX11のアクセスを削除
-xhost - local:docker
+if [[ ! "$UNAME_R" =~ WSL2 ]]; then
+    xhost + local:docker
+fi
