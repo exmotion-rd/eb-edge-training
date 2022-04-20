@@ -16,7 +16,7 @@ docker run  --rm --network host \
  -v /tmp/.X11-unix:/tmp/.X11-unix \
  -e DISPLAY \
  -e XAUTHORITY \
- -v=$(pwd):/workspace \
+ -v $(pwd):/workspace \
  -w /workspace \
  -it \
  ros2-${ROS_DISTRO}-env 
