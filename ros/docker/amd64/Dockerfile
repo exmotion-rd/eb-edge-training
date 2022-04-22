@@ -23,23 +23,25 @@ RUN apt-get update \
     ros-${ROS_DISTRO}-joint-state-publisher-gui \
     ros-${ROS_DISTRO}-xacro
 
-
-# 作業用ディレクトリの指定
-ARG ROS_WS=/root/ros2_ws
-
-# gazebo_ros2_contorlのインストール
+# ローカルでビルドするパッケージの取得
+ARG ROS_WS=/usr/src/ros2/${ROS_DISTRO}
 WORKDIR ${ROS_WS}/src
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
  && git clone https://github.com/ros-simulation/gazebo_ros2_control -b ${ROS_DISTRO} \
  && rosdep fix-permissions && rosdep update \
  && rosdep install -r --from-paths . --ignore-src --rosdistro ${ROS_DISTRO} -y
 
-
+# 取得したパッケージのビルド
 WORKDIR ${ROS_WS}
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
  && colcon build --event-handlers desktop_notification- status- --cmake-args -DCMAKE_BUILD_TYPE=Release \
  && rm -rf /var/lib/apt/lists/*
-RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc \
+
+# ROS2環境の設定ファイルの用意
+RUN sed --in-place -e 's/set -e//' /ros_entrypoint.sh \
+ && sed --in-place --expression \
+        '$isource "'"${ROS_WS}/install/local_setup.bash"'"' /ros_entrypoint.sh \
+ && echo 'source /opt/ros/${ROS_DISTRO}/setup.bash' >> /root/.bashrc \
  && echo "source ${ROS_WS}/install/local_setup.bash" >> /root/.bashrc
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
