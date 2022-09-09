@@ -26,14 +26,16 @@ RUN apt-get update \
 # ローカルでビルドするパッケージの取得
 ARG ROS_WS=/usr/src/ros2/${ROS_DISTRO}
 WORKDIR ${ROS_WS}/src
-RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
+RUN apt-get update \
+ && . /opt/ros/${ROS_DISTRO}/setup.sh \
  && git clone https://github.com/ros-simulation/gazebo_ros2_control -b ${ROS_DISTRO} \
  && rosdep fix-permissions && rosdep update \
  && rosdep install -r --from-paths . --ignore-src --rosdistro ${ROS_DISTRO} -y
 
 # 取得したパッケージのビルド
 WORKDIR ${ROS_WS}
-RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
+RUN  apt-get update \
+ && . /opt/ros/${ROS_DISTRO}/setup.sh \
  && colcon build --event-handlers desktop_notification- status- --cmake-args -DCMAKE_BUILD_TYPE=Release \
  && rm -rf /var/lib/apt/lists/*
 
