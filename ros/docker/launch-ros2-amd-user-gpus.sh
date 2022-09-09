@@ -9,18 +9,19 @@ xhost + local:docker
 
 # コンテナの起動
 docker run  --rm --network host \
- --name foxy \
- --gpus all \
- -e NVIDIA_DRIVER_CAPABILITIES=all \
- --user=$(id -u):$(id -g) \
- -v /dev/shm:/dev/shm \
- -v /tmp/.X11-unix:/tmp/.X11-unix \
- -e DISPLAY \
- -e XAUTHORITY \
- -v $(pwd):/workspace \
- -w /workspace \
- -it \
- ros2-${ROS_DISTRO}-user
+    --name foxy \
+    --gpus all \
+    -e NVIDIA_DRIVER_CAPABILITIES=all \
+    --user=$(id -u):$(id -g) \
+    -v /dev/shm:/dev/shm \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -e DISPLAY \
+    -e XAUTHORITY \
+    -e TZ=Asia/Tokyo \
+    -v $(pwd):/workspace \
+    -w /workspace \
+    -it \
+    ros2-${ROS_DISTRO}-user
 
 # DockerコンテナからのX11のアクセスを削除
 xhost - local:docker

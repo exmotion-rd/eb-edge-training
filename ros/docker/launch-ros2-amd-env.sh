@@ -11,16 +11,17 @@ if [[ ! "$UNAME_R" =~ WSL2 ]]; then
 fi
 
 # コンテナの起動
-docker run  --rm --network host \
- --name foxy \
- -v /dev/shm:/dev/shm \
- -v /tmp/.X11-unix:/tmp/.X11-unix \
- -e DISPLAY \
- -e XAUTHORITY \
- -v $(pwd):/workspace \
- -w /workspace \
- -it \
- ros2-${ROS_DISTRO}-env 
+docker run --rm --network host \
+    --name foxy \
+    -v /dev/shm:/dev/shm \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -e DISPLAY \
+    -e XAUTHORITY \
+    -e TZ=Asia/Tokyo \
+    -v $(pwd):/workspace \
+    -w /workspace \
+    -it \
+    ros2-${ROS_DISTRO}-env 
 
 # DockerコンテナからのX11のアクセスを削除
 if [[ ! "$UNAME_R" =~ WSL2 ]]; then
