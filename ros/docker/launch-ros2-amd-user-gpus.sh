@@ -20,7 +20,7 @@ docker run  --rm --network host \
  -v $(pwd):/workspace \
  -w /workspace \
  -it \
- ros2-${ROS_DISTRO}-env 
+ ros2-${ROS_DISTRO}-user
 
 # DockerコンテナからのX11のアクセスを削除
 xhost - local:docker
