@@ -8,7 +8,7 @@ setup(
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
+         ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'meter = thermo_py.thermo_meter:main'
+            'meter = thermo_py.thermo_meter:main',
+            'monitor = thermo_py.thermo_monitor:main'
         ],
     },
 )
