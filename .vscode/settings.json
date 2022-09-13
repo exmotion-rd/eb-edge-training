@@ -1,9 +1,11 @@
 {
-    "editor.tabSize": 4,
-    "python.autoComplete.extraPaths": [
-        "/opt/ros/foxy/lib/python3.8/site-packages/"
-    ],
-    "python.analysis.extraPaths": [
-        "/opt/ros/foxy/lib/python3.8/site-packages/"
-    ]
+  "editor.tabSize": 4,
+  "python.autoComplete.extraPaths": [
+    "/opt/ros/foxy/lib/python3.8/site-packages/",
+    "${workspaceFolder}/ros/ros2_ws/install/thermo_msgs/lib/python3.8/site-packages/"
+  ],
+  "python.analysis.extraPaths": [
+    "/opt/ros/foxy/lib/python3.8/site-packages/",
+    "${workspaceFolder}/ros/ros2_ws/install/thermo_msgs/lib/python3.8/site-packages/"
+  ]
 }
