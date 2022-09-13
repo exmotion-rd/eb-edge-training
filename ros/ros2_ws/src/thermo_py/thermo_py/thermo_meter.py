@@ -36,7 +36,9 @@ class ThermoMeter(Node):
         msg.header.frame_id = str(self._id)
         msg.temperature = self._sensor.value
         self._publisher.publish(msg)
-        self.get_logger().info(f'publish temperature: id={msg.header.frame_id}, temperature={msg.temperature}')
+        self.get_logger().info(
+            f'publish temperature: id={msg.header.frame_id}, temperature={msg.temperature}'
+        )
         self._id += 1
 
 
