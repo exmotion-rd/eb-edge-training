@@ -2,7 +2,6 @@ import rclpy
 import datetime
 from datetime import datetime, timedelta
 from rclpy.node import Node
-from std_msgs.msg import Header
 from thermo_msgs.msg import Temperature
 
 
