@@ -20,8 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'meter = thermo_py.thermo_meter:main',
-            'monitor = thermo_py.thermo_monitor:main'
+            'meter = thermo_py.thermo_meter:main'
         ],
     },
 )
