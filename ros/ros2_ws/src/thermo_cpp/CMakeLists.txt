@@ -29,7 +29,6 @@ find_package(thermo_msgs REQUIRED)
 
 # 実行ファイル(ターゲット)の生成方法の指定
 add_executable(meter src/thermo_meter.cpp)
-add_executable(monitor src/thermo_monitor.cpp)
 
 # 実行ファイル(ターゲット)が依存するライブラリ/パッケージの指定
 ament_target_dependencies(meter
@@ -46,7 +45,7 @@ ament_target_dependencies(monitor
 
 # 実行ファイル(ターゲット)を lib フォルダに配置
 install(
-  TARGETS meter monitor
+  TARGETS meter
   DESTINATION lib/${PROJECT_NAME}
 )
 # ---- added ----
