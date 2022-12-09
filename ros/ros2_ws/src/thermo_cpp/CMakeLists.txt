@@ -37,12 +37,6 @@ ament_target_dependencies(meter
   thermo_msgs
 )
 
-ament_target_dependencies(monitor
-  rclcpp 
-  std_msgs
-  thermo_msgs
-)
-
 # 実行ファイル(ターゲット)を lib フォルダに配置
 install(
   TARGETS meter
