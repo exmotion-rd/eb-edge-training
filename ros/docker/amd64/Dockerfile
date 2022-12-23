@@ -1,4 +1,4 @@
-ARG ROS_DISTRO=foxy
+ARG ROS_DISTRO=humble
 FROM osrf/ros:${ROS_DISTRO}-desktop
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -28,7 +28,7 @@ ARG ROS_WS=/usr/src/ros2/${ROS_DISTRO}
 WORKDIR ${ROS_WS}/src
 RUN apt-get update \
  && . /opt/ros/${ROS_DISTRO}/setup.sh \
- && git clone https://github.com/ros-simulation/gazebo_ros2_control -b ${ROS_DISTRO} \
+ && git clone https://github.com/ros-simulation/gazebo_ros2_control \
  && rosdep fix-permissions && rosdep update \
  && rosdep install -r --from-paths . --ignore-src --rosdistro ${ROS_DISTRO} -y
 

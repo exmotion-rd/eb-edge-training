@@ -1,5 +1,5 @@
 #!/bin/bash
-ROS_DISTRO=foxy
+ROS_DISTRO=humble
 if [ $# -eq 1 ]; then
     ROS_DISTRO=$1
 fi
