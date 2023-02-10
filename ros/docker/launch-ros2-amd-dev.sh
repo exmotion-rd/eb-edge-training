@@ -10,9 +10,16 @@ if [[ ! "$UNAME_R" =~ WSL2 ]]; then
     xhost + local:docker
 fi
 
+# Check nvidia runtime
+GPUS=
+if [[ -n $(docker info 2>/dev/null | grep 'Runtimes.*nvidia') ]]; then
+    GPUS="--gpus all"
+fi
+
 # コンテナの起動
 docker run --rm --network host \
-    --name foxy \
+    --name ${ROS_DISTRO} \
+    ${GPUS} \
     -v /dev/shm:/dev/shm \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -e DISPLAY \
