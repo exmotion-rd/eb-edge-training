@@ -1,4 +1,6 @@
 .venv
-ros/ros2_ws/install/
-ros/ros2_ws/build/
-ros/ros2_ws/log/
+.vscode
+ros/*/install/
+ros/*/build/
+ros/*/log/
+*.log

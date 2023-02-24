@@ -1,0 +1,11 @@
+<launch>
+  <!-- Define arguments with default values -->
+  <arg name="model" default="$(dirname)/urdf/robot.urdf"/>
+  <arg name="rviz_config" default="$(dirname)/config/robot.rviz"/>
+
+  <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(dirname)/urdf/robot.urdf)"/>
+  <node pkg="robot_state_publisher" exec="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="use_sim_time" value="false"/>
+    <param name="robot_description" value="/home/fukuoka/eb-edge-training/ros/rviz_lesson/src/d2arm_robot1/urdf/robot.urdf"/>
+  </node>
+</launch>

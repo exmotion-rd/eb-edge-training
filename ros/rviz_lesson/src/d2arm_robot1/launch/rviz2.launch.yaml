@@ -1,0 +1,28 @@
+launch:
+
+# Define arguments with default values
+# - arg:
+#     name: model
+#     default: $(find d2arm_robot1)/config/robot.rviz
+# - arg:
+#     name: rviz_config
+#     default: $(find d2arm_robot1)/urdf/robot.urdf
+
+# - node:
+#     name: rviz2
+#     pkg: rviz2
+#     exec: rviz2
+#     output: screen
+#     args: "--display-config: config/robot.rviz"
+- node:
+    name: robot_state_publisher
+    pkg: robot_state_publisher
+    exec: robot_state_publisher
+    output: screen
+    param:
+      - 
+        name: use_sim_time
+        value: false
+      - 
+        name: robot_description
+        value: $(dirname)/../urdf/robot.urdf

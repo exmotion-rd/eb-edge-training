@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot name="d2arm_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- define basic colors -->
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0" />
+    </material>
+    <material name="blue">
+        <color rgba="0.0 0.0 0.8 1.0" />
+    </material>
+    <material name="green">
+        <color rgba="0.0 0.8 0.0 1.0" />
+    </material>
+    <material name="grey">
+        <color rgba="0.2 0.2 0.2 1.0" />
+    </material>
+    <material name="orange">
+        <color rgba="1.0 0.423529411765 0.0392156862745 1.0" />
+    </material>
+    <material name="brown">
+        <color rgba="0.870588235294 0.811764705882 0.764705882353 1.0" />
+    </material>
+    <material name="red">
+        <color rgba="0.8 0.0 0.0 1.0" />
+    </material>
+    <material name="white">
+        <color rgba="1.0 1.0 1.0 1.0" />
+    </material>
+
+    <joint name="joint1" type="revolute">
+        <parent link="base_link" />
+        <child link="link1" />
+        <origin rpy="0 0 0" xyz="0 0.1 1.95" />
+        <axis xyz="0 1 0" />
+        <limit lower="-1.396" upper="1.396" effort="10" velocity="1.57" />
+    </joint>
+
+    <link name="base_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 1.0" />
+            <geometry>
+                <box size="0.1 0.1 2" />
+            </geometry>
+            <material name="black" />
+        </visual>
+    </link>
+
+
+    <link name="link1">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0.45" />
+            <geometry>
+                <box size="0.1 0.1 1" />
+            </geometry>
+            <material name="red" />
+        </visual>
+    </link>
+
+    <joint name="joint2" type="revolute">
+        <parent link="link1" />
+        <child link="link2" />
+        <origin rpy="0 0 0" xyz="0 0.1 0.9" />
+        <axis xyz="0 1 0" />
+        <limit lower="-1.396" upper="1.396" effort="10" velocity="1.57" />
+    </joint>
+
+    <link name="link2">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0.45" />
+            <geometry>
+                <box size="0.1 0.1 1" />
+            </geometry>
+            <material name="blue" />
+        </visual>
+    </link>
+</robot>
