@@ -21,7 +21,8 @@ RUN apt-get update \
     ros-${ROS_DISTRO}-gazebo-ros-pkgs \
     ros-${ROS_DISTRO}-joint-state-publisher \
     ros-${ROS_DISTRO}-joint-state-publisher-gui \
-    ros-${ROS_DISTRO}-xacro
+    ros-${ROS_DISTRO}-xacro \
+    ros-${ROS_DISTRO}-ros2-control
 
 # ローカルでビルドするパッケージの取得
 ARG ROS_WS=/usr/src/ros2/${ROS_DISTRO}
